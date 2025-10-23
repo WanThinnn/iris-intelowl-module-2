@@ -220,9 +220,10 @@ class IntelowlHandler(object):
         self.log.info(f'Getting domain report for {ioc.ioc_value}')
 
         domain = ioc.ioc_value
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
         try:
             query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=domain,
-                                                                                   playbook_requested="CYBERFORTRESS_ANALYZERS",
+                                                                                   playbook_requested=playbook_name,
                                                                                    tags_labels=["iris"],
                                                                                    observable_classification="domain")
         except IntelOwlClientException as e:
@@ -274,9 +275,10 @@ class IntelowlHandler(object):
         self.log.info(f'Getting IP report for {ioc.ioc_value}')
 
         ip = ioc.ioc_value
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
         try:
             query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=ip,
-                                                                                   playbook_requested="CYBERFORTRESS_ANALYZERS",
+                                                                                   playbook_requested=playbook_name,
                                                                                    tags_labels=["iris"],
                                                                                    observable_classification="ip")
         except IntelOwlClientException as e:
@@ -327,9 +329,10 @@ class IntelowlHandler(object):
         self.log.info(f'Getting URL report for {ioc.ioc_value}')
 
         url = ioc.ioc_value
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
         try:
             query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=url,
-                                                                                   playbook_requested="CYBERFORTRESS_ANALYZERS",
+                                                                                   playbook_requested=playbook_name,
                                                                                    tags_labels=["iris"],
                                                                                    observable_classification="url")
         except IntelOwlClientException as e:
@@ -380,9 +383,10 @@ class IntelowlHandler(object):
         self.log.info(f'Getting hash report for {ioc.ioc_value}')
 
         hash = ioc.ioc_value
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
         try:
             query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=hash,
-                                                                                   playbook_requested="CYBERFORTRESS_ANALYZERS",
+                                                                                   playbook_requested=playbook_name,
                                                                                    tags_labels=["iris"],
                                                                                    observable_classification="hash")
         except IntelOwlClientException as e:
@@ -433,9 +437,10 @@ class IntelowlHandler(object):
         self.log.info(f'Getting generic report for {ioc.ioc_value}')
 
         generic = ioc.ioc_value
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
         try:
             query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=generic,
-                                                                                   playbook_requested="CYBERFORTRESS_ANALYZERS",
+                                                                                   playbook_requested=playbook_name,
                                                                                    tags_labels=["iris"],
                                                                                    observable_classification="generic")
         except IntelOwlClientException as e:

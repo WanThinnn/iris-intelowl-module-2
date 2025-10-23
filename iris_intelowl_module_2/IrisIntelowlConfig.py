@@ -52,6 +52,14 @@ module_configuration = [
         "type": "integer"
     },
     {
+        "param_name": "intelowl_playbook_name",
+        "param_human_name": "IntelOwl Playbook name",
+        "param_description": "Name of the playbook to use for analysis (e.g., CYBERFORTRESS_ANALYZERS, FREE_TO_USE_ANALYZERS)",
+        "default": "CYBERFORTRESS_ANALYZERS",
+        "mandatory": True,
+        "type": "string"
+    },
+    {
         "param_name": "intelowl_manual_hook_enabled",
         "param_human_name": "Manual triggers on IOCs",
         "param_description": "Set to True to offers possibility to manually triggers the module via the UI",

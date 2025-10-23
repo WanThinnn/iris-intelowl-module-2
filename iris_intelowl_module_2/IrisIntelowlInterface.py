@@ -14,8 +14,8 @@ from pathlib import Path
 import iris_interface.IrisInterfaceStatus as InterfaceStatus
 from iris_interface.IrisModuleInterface import IrisPipelineTypes, IrisModuleInterface, IrisModuleTypes
 
-import iris_intelowl_module.IrisIntelowlConfig as interface_conf
-from iris_intelowl_module.intelowl_handler.intelowl_handler import IntelowlHandler
+import iris_intelowl_module_2.IrisIntelowlConfig as interface_conf
+from iris_intelowl_module_2.intelowl_handler.intelowl_handler import IntelowlHandler
 
 
 class IrisIntelowlInterface(IrisModuleInterface):
