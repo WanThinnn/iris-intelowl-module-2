@@ -223,7 +223,7 @@ class IntelowlHandler(object):
         playbook_name = self.mod_config.get("intelowl_playbook_name")
         try:
             query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=domain,
-                                                                                   playbook_requested=playbook_name,
+                                                                                   playbook_requested=[playbook_name],
                                                                                    tags_labels=["iris"],
                                                                                    observable_classification="domain")
         except IntelOwlClientException as e:
