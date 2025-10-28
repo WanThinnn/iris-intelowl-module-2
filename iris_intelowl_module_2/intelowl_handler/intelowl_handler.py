@@ -322,6 +322,7 @@ class IntelowlHandler(object):
                 try:
                     # Add playbook name to field name if multiple playbooks
                     field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
+                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
                     add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
                                             field_value=rendered_report)
 
@@ -382,6 +383,7 @@ class IntelowlHandler(object):
                 try:
                     # Add playbook name to field name if multiple playbooks
                     field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
+                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
                     add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
                                             field_value=rendered_report)
 
@@ -442,6 +444,7 @@ class IntelowlHandler(object):
                 try:
                     # Add playbook name to field name if multiple playbooks
                     field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
+                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
                     add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
                                             field_value=rendered_report)
 
@@ -502,6 +505,7 @@ class IntelowlHandler(object):
                 try:
                     # Add playbook name to field name if multiple playbooks
                     field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
+                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
                     add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
                                             field_value=rendered_report)
 
@@ -563,6 +567,7 @@ class IntelowlHandler(object):
                 try:
                     # Add playbook name to field name if multiple playbooks
                     field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
+                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
                     add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
                                             field_value=rendered_report)
 
