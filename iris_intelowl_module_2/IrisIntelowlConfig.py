@@ -54,7 +54,7 @@ module_configuration = [
     {
         "param_name": "intelowl_playbook_name",
         "param_human_name": "IntelOwl Playbook name",
-        "param_description": "Name of the playbook to use for analysis (e.g., CYBERFORTRESS_ANALYZERS, FREE_TO_USE_ANALYZERS)",
+        "param_description": "Name of the playbook to use for analysis (e.g FREE_TO_USE_ANALYZERS)",
         "default": "CYBERFORTRESS_ANALYZERS",
         "mandatory": True,
         "type": "string"
