@@ -10,6 +10,7 @@
 
 
 import traceback
+import copy
 from jinja2 import Template
 
 import iris_interface.IrisInterfaceStatus as InterfaceStatus
@@ -74,7 +75,8 @@ class IntelowlHandler(object):
     def prerender_report(self, intelowl_report, playbook_name=None) -> dict:
 
         pre_render = dict()
-        pre_render["results"] = intelowl_report
+        # Deep copy to prevent reference sharing between playbook reports
+        pre_render["results"] = copy.deepcopy(intelowl_report)
 
         analyzer_reports = intelowl_report.get("analyzer_reports")
         connector_reports = intelowl_report.get("connector_reports")
@@ -308,8 +310,10 @@ class IntelowlHandler(object):
 
             if self.mod_config.get('intelowl_report_as_attribute') is True:
                 self.log.info(f'Adding new attribute IntelOwl Domain Report to IOC for playbook: {playbook_name}')
-
-                report = job_result
+                
+                # Create a copy to avoid data sharing between playbooks
+                report = copy.deepcopy(job_result)
+                self.log.info(f'Report for playbook {playbook_name}: job_id={report.get("id")}')
 
                 status = self.gen_domain_report_from_template(self.mod_config.get('intelowl_domain_report_template'),
                                                               report, playbook_name)
@@ -371,7 +375,8 @@ class IntelowlHandler(object):
             if self.mod_config.get('intelowl_report_as_attribute') is True:
                 self.log.info(f'Adding new attribute IntelOwl IP Report to IOC for playbook: {playbook_name}')
 
-                report = job_result
+                # Create a copy to avoid data sharing between playbooks
+                report = copy.deepcopy(job_result)
 
                 status = self.gen_ip_report_from_template(self.mod_config.get('intelowl_ip_report_template'), report, playbook_name)
 
@@ -432,7 +437,8 @@ class IntelowlHandler(object):
             if self.mod_config.get('intelowl_report_as_attribute') is True:
                 self.log.info(f'Adding new attribute IntelOwl URL Report to IOC for playbook: {playbook_name}')
 
-                report = job_result
+                # Create a copy to avoid data sharing between playbooks
+                report = copy.deepcopy(job_result)
 
                 status = self.gen_url_report_from_template(self.mod_config.get('intelowl_url_report_template'), report, playbook_name)
 
@@ -493,7 +499,8 @@ class IntelowlHandler(object):
             if self.mod_config.get('intelowl_report_as_attribute') is True:
                 self.log.info(f'Adding new attribute IntelOwl hash Report to IOC for playbook: {playbook_name}')
 
-                report = job_result
+                # Create a copy to avoid data sharing between playbooks
+                report = copy.deepcopy(job_result)
 
                 status = self.gen_hash_report_from_template(self.mod_config.get('intelowl_hash_report_template'), report, playbook_name)
 
@@ -554,7 +561,8 @@ class IntelowlHandler(object):
             if self.mod_config.get('intelowl_report_as_attribute') is True:
                 self.log.info(f'Adding new attribute IntelOwl generic Report to IOC for playbook: {playbook_name}')
 
-                report = job_result
+                # Create a copy to avoid data sharing between playbooks
+                report = copy.deepcopy(job_result)
 
                 status = self.gen_generic_report_from_template(self.mod_config.get('intelowl_generic_report_template'),
                                                                report, playbook_name)
