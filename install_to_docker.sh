@@ -40,7 +40,7 @@ echo "[5/5] Installing in iriswebapp_worker..."
 sudo docker exec iriswebapp_worker /opt/venv/bin/pip install --force-reinstall "/tmp/$WHEEL_NAME"
 
 echo ""
-echo "✅ Installation complete!"
+echo "======= Installation complete! ======="
 echo ""
 echo "Next steps:"
 echo "1. Restart containers: sudo docker restart iriswebapp_app iriswebapp_worker"

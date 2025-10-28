@@ -1,6 +1,6 @@
 Metadata-Version: 2.2
 Name: iris-intelowl-module-2
-Version: 0.1.1
+Version: 0.1.2
 Summary: `iris-intelowl-module` is a IRIS processor module providing open-source threat intelligence leveraging IntelOlw analyzers, to enrich indicators of compromise
 Home-page: https://github.com/dfir-iris/iris-intelowl-module
 Author: dfir-iris
