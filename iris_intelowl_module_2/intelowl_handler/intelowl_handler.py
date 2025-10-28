@@ -93,17 +93,38 @@ class IntelowlHandler(object):
 
         pre_render["external_link"] = iol_report_link
         
-        # Add playbook name for unique IDs in template
+        # Add playbook name for unique IDs and display in template
         if playbook_name:
             # Create safe ID suffix (remove special chars)
             safe_name = playbook_name.replace(" ", "_").replace("-", "_").replace(".", "_")
             pre_render["playbook_suffix"] = safe_name
-            self.log.info(f"Generated playbook_suffix: {safe_name}")
+            pre_render["playbook_name"] = playbook_name  # For display in template
+            self.log.info(f"Generated playbook_suffix: {safe_name} for playbook: {playbook_name}")
         else:
             pre_render["playbook_suffix"] = "default"
+            pre_render["playbook_name"] = "Unknown Playbook"
             self.log.warning("No playbook_name provided, using suffix: default")
 
         return pre_render
+    
+    def _add_playbook_banner(self, rendered_html: str, playbook_name: str) -> str:
+        """
+        Add a playbook name banner at the top of the rendered HTML report
+        
+        :param rendered_html: The rendered HTML content
+        :param playbook_name: Name of the playbook used
+        :return: HTML with playbook banner prepended
+        """
+        if not playbook_name or playbook_name == "Unknown Playbook":
+            return rendered_html
+        
+        playbook_banner = f'''
+<div class="alert alert-info" role="alert" style="margin-bottom: 20px; border-left: 4px solid #0dcaf0;">
+    <h5 class="alert-heading mb-2"><i class="fas fa-book"></i> IntelOwl Playbook</h5>
+    <p class="mb-0"><strong>{playbook_name}</strong></p>
+</div>
+'''
+        return playbook_banner + rendered_html
 
     def gen_domain_report_from_template(self, html_template, intelowl_report, playbook_name=None) -> InterfaceStatus:
         """
@@ -119,6 +140,8 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
+            # Add playbook name banner
+            rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
@@ -141,6 +164,8 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
+            # Add playbook name banner
+            rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
@@ -163,6 +188,8 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
+            # Add playbook name banner
+            rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
@@ -185,6 +212,8 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
+            # Add playbook name banner
+            rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
@@ -207,6 +236,8 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
+            # Add playbook name banner
+            rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
