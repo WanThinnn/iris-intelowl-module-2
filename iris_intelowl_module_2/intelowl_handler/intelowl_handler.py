@@ -10,7 +10,6 @@
 
 
 import traceback
-import copy
 from jinja2 import Template
 
 import iris_interface.IrisInterfaceStatus as InterfaceStatus
@@ -54,29 +53,10 @@ class IntelowlHandler(object):
 
         return intelowl
 
-    def get_playbook_names(self):
-        """
-        Parse playbook names from config. Supports both single and comma-separated multiple playbooks.
-
-        :return: List of playbook names
-        """
-        playbook_config = self.mod_config.get("intelowl_playbook_name", "")
-        
-        # Split by comma and strip whitespace
-        playbooks = [name.strip() for name in playbook_config.split(',') if name.strip()]
-        
-        if not playbooks:
-            self.log.warning("No playbook names configured, using default: FREE_TO_USE_ANALYZERS")
-            playbooks = ["FREE_TO_USE_ANALYZERS"]
-        
-        self.log.info(f"Using playbooks: {', '.join(playbooks)}")
-        return playbooks
-
     def prerender_report(self, intelowl_report, playbook_name=None) -> dict:
 
         pre_render = dict()
-        # Deep copy to prevent reference sharing between playbook reports
-        pre_render["results"] = copy.deepcopy(intelowl_report)
+        pre_render["results"] = intelowl_report
 
         analyzer_reports = intelowl_report.get("analyzer_reports")
         connector_reports = intelowl_report.get("connector_reports")
@@ -95,17 +75,13 @@ class IntelowlHandler(object):
 
         pre_render["external_link"] = iol_report_link
         
-        # Add playbook name for unique IDs and display in template
+        # Add playbook name for display in banner
         if playbook_name:
-            # Create safe ID suffix (remove special chars)
-            safe_name = playbook_name.replace(" ", "_").replace("-", "_").replace(".", "_")
-            pre_render["playbook_suffix"] = safe_name
-            pre_render["playbook_name"] = playbook_name  # For display in template
-            self.log.info(f"Generated playbook_suffix: {safe_name} for playbook: {playbook_name}")
+            pre_render["playbook_name"] = playbook_name
+            self.log.info(f"Report for playbook: {playbook_name}")
         else:
-            pre_render["playbook_suffix"] = "default"
             pre_render["playbook_name"] = "Unknown Playbook"
-            self.log.warning("No playbook_name provided, using suffix: default")
+            self.log.warning("No playbook_name provided")
 
         return pre_render
     
@@ -126,6 +102,7 @@ class IntelowlHandler(object):
     <p class="mb-0"><strong>{playbook_name}</strong></p>
 </div>
 '''
+        
         return playbook_banner + rendered_html
 
     def gen_domain_report_from_template(self, html_template, intelowl_report, playbook_name=None) -> InterfaceStatus:
@@ -134,7 +111,7 @@ class IntelowlHandler(object):
 
         :param html_template: A string representing the HTML template
         :param intelowl_report: The JSON report fetched with intelowl API
-        :param playbook_name: Optional playbook name for unique IDs
+        :param playbook_name: Name of the playbook used
         :return: InterfaceStatus
         """
         template = Template(html_template)
@@ -142,8 +119,9 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
-            # Add playbook name banner
-            rendered = self._add_playbook_banner(rendered, playbook_name)
+            # Add playbook banner if playbook name is provided
+            if playbook_name:
+                rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
@@ -158,7 +136,7 @@ class IntelowlHandler(object):
 
         :param html_template: A string representing the HTML template
         :param intelowl_report: The JSON report fetched with intelowl API
-        :param playbook_name: Optional playbook name for unique IDs
+        :param playbook_name: Name of the playbook used
         :return: InterfaceStatus
         """
         template = Template(html_template)
@@ -166,8 +144,9 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
-            # Add playbook name banner
-            rendered = self._add_playbook_banner(rendered, playbook_name)
+            # Add playbook banner if playbook name is provided
+            if playbook_name:
+                rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
@@ -182,7 +161,7 @@ class IntelowlHandler(object):
 
         :param html_template: A string representing the HTML template
         :param intelowl_report: The JSON report fetched with intelowl API
-        :param playbook_name: Optional playbook name for unique IDs
+        :param playbook_name: Name of the playbook used
         :return: InterfaceStatus
         """
         template = Template(html_template)
@@ -190,8 +169,9 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
-            # Add playbook name banner
-            rendered = self._add_playbook_banner(rendered, playbook_name)
+            # Add playbook banner if playbook name is provided
+            if playbook_name:
+                rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
@@ -206,7 +186,7 @@ class IntelowlHandler(object):
 
         :param html_template: A string representing the HTML template
         :param intelowl_report: The JSON report fetched with intelowl API
-        :param playbook_name: Optional playbook name for unique IDs
+        :param playbook_name: Name of the playbook used
         :return: InterfaceStatus
         """
         template = Template(html_template)
@@ -214,8 +194,9 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
-            # Add playbook name banner
-            rendered = self._add_playbook_banner(rendered, playbook_name)
+            # Add playbook banner if playbook name is provided
+            if playbook_name:
+                rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
@@ -230,7 +211,7 @@ class IntelowlHandler(object):
 
         :param html_template: A string representing the HTML template
         :param intelowl_report: The JSON report fetched with intelowl API
-        :param playbook_name: Optional playbook name for unique IDs
+        :param playbook_name: Name of the playbook used
         :return: InterfaceStatus
         """
         template = Template(html_template)
@@ -238,8 +219,9 @@ class IntelowlHandler(object):
 
         try:
             rendered = template.render(pre_render)
-            # Add playbook name banner
-            rendered = self._add_playbook_banner(rendered, playbook_name)
+            # Add playbook banner if playbook name is provided
+            if playbook_name:
+                rendered = self._add_playbook_banner(rendered, playbook_name)
 
         except Exception:
 
@@ -286,56 +268,47 @@ class IntelowlHandler(object):
         self.log.info(f'Getting domain report for {ioc.ioc_value}')
 
         domain = ioc.ioc_value
-        playbook_names = self.get_playbook_names()
-        
-        # Execute analysis for each playbook
-        for playbook_name in playbook_names:
-            self.log.info(f'Executing playbook: {playbook_name} for domain: {domain}')
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
+        try:
+            query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=domain,
+                                                                                   playbook_requested=playbook_name,
+                                                                                   tags_labels=["iris"],
+                                                                                   observable_classification="domain")
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        job_id = query_result.get("job_id")
+
+        try:
+            job_result = self.get_job_result(job_id)
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        if self.mod_config.get('intelowl_report_as_attribute') is True:
+            self.log.info('Adding new attribute IntelOwl Domain Report to IOC')
+
+            report = job_result
+
+            status = self.gen_domain_report_from_template(self.mod_config.get('intelowl_domain_report_template'),
+                                                          report, playbook_name)
+
+            if not status.is_success():
+                return status
+
+            rendered_report = status.get_data()
+
             try:
-                query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=domain,
-                                                                                       playbook_requested=playbook_name,
-                                                                                       tags_labels=["iris"],
-                                                                                       observable_classification="domain")
-            except IntelOwlClientException as e:
-                self.log.error(f"Error executing playbook {playbook_name}: {e}")
-                return InterfaceStatus.I2Error(e)
+                add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name="HTML report", field_type="html",
+                                        field_value=rendered_report)
 
-            job_id = query_result.get("job_id")
+            except Exception:
 
-            try:
-                job_result = self.get_job_result(job_id)
-            except IntelOwlClientException as e:
-                self.log.error(e)
-                return InterfaceStatus.I2Error(e)
-
-            if self.mod_config.get('intelowl_report_as_attribute') is True:
-                self.log.info(f'Adding new attribute IntelOwl Domain Report to IOC for playbook: {playbook_name}')
-                
-                # Create a copy to avoid data sharing between playbooks
-                report = copy.deepcopy(job_result)
-                self.log.info(f'Report for playbook {playbook_name}: job_id={report.get("id")}')
-
-                status = self.gen_domain_report_from_template(self.mod_config.get('intelowl_domain_report_template'),
-                                                              report, playbook_name)
-
-                if not status.is_success():
-                    return status
-
-                rendered_report = status.get_data()
-
-                try:
-                    # Add playbook name to field name if multiple playbooks
-                    field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
-                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
-                    add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
-                                            field_value=rendered_report)
-
-                except Exception:
-
-                    self.log.error(traceback.format_exc())
-                    return InterfaceStatus.I2Error(traceback.format_exc())
-            else:
-                self.log.info('Skipped adding attribute report. Option disabled')
+                self.log.error(traceback.format_exc())
+                return InterfaceStatus.I2Error(traceback.format_exc())
+        else:
+            self.log.info('Skipped adding attribute report. Option disabled')
 
         return InterfaceStatus.I2Success()
 
@@ -350,54 +323,46 @@ class IntelowlHandler(object):
         self.log.info(f'Getting IP report for {ioc.ioc_value}')
 
         ip = ioc.ioc_value
-        playbook_names = self.get_playbook_names()
-        
-        # Execute analysis for each playbook
-        for playbook_name in playbook_names:
-            self.log.info(f'Executing playbook: {playbook_name} for IP: {ip}')
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
+        try:
+            query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=ip,
+                                                                                   playbook_requested=playbook_name,
+                                                                                   tags_labels=["iris"],
+                                                                                   observable_classification="ip")
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        job_id = query_result.get("job_id")
+
+        try:
+            job_result = self.get_job_result(job_id)
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        if self.mod_config.get('intelowl_report_as_attribute') is True:
+            self.log.info('Adding new attribute IntelOwl IP Report to IOC')
+
+            report = job_result
+
+            status = self.gen_ip_report_from_template(self.mod_config.get('intelowl_ip_report_template'), report, playbook_name)
+
+            if not status.is_success():
+                return status
+
+            rendered_report = status.get_data()
+
             try:
-                query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=ip,
-                                                                                       playbook_requested=playbook_name,
-                                                                                       tags_labels=["iris"],
-                                                                                       observable_classification="ip")
-            except IntelOwlClientException as e:
-                self.log.error(f"Error executing playbook {playbook_name}: {e}")
-                return InterfaceStatus.I2Error(e)
+                add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name="HTML report", field_type="html",
+                                        field_value=rendered_report)
 
-            job_id = query_result.get("job_id")
+            except Exception:
 
-            try:
-                job_result = self.get_job_result(job_id)
-            except IntelOwlClientException as e:
-                self.log.error(e)
-                return InterfaceStatus.I2Error(e)
-
-            if self.mod_config.get('intelowl_report_as_attribute') is True:
-                self.log.info(f'Adding new attribute IntelOwl IP Report to IOC for playbook: {playbook_name}')
-
-                # Create a copy to avoid data sharing between playbooks
-                report = copy.deepcopy(job_result)
-
-                status = self.gen_ip_report_from_template(self.mod_config.get('intelowl_ip_report_template'), report, playbook_name)
-
-                if not status.is_success():
-                    return status
-
-                rendered_report = status.get_data()
-
-                try:
-                    # Add playbook name to field name if multiple playbooks
-                    field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
-                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
-                    add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
-                                            field_value=rendered_report)
-
-                except Exception:
-
-                    self.log.error(traceback.format_exc())
-                    return InterfaceStatus.I2Error(traceback.format_exc())
-            else:
-                self.log.info('Skipped adding attribute report. Option disabled')
+                self.log.error(traceback.format_exc())
+                return InterfaceStatus.I2Error(traceback.format_exc())
+        else:
+            self.log.info('Skipped adding attribute report. Option disabled')
 
         return InterfaceStatus.I2Success()
 
@@ -412,54 +377,46 @@ class IntelowlHandler(object):
         self.log.info(f'Getting URL report for {ioc.ioc_value}')
 
         url = ioc.ioc_value
-        playbook_names = self.get_playbook_names()
-        
-        # Execute analysis for each playbook
-        for playbook_name in playbook_names:
-            self.log.info(f'Executing playbook: {playbook_name} for URL: {url}')
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
+        try:
+            query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=url,
+                                                                                   playbook_requested=playbook_name,
+                                                                                   tags_labels=["iris"],
+                                                                                   observable_classification="url")
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        job_id = query_result.get("job_id")
+
+        try:
+            job_result = self.get_job_result(job_id)
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        if self.mod_config.get('intelowl_report_as_attribute') is True:
+            self.log.info('Adding new attribute IntelOwl URL Report to IOC')
+
+            report = job_result
+
+            status = self.gen_url_report_from_template(self.mod_config.get('intelowl_url_report_template'), report, playbook_name)
+
+            if not status.is_success():
+                return status
+
+            rendered_report = status.get_data()
+
             try:
-                query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=url,
-                                                                                       playbook_requested=playbook_name,
-                                                                                       tags_labels=["iris"],
-                                                                                       observable_classification="url")
-            except IntelOwlClientException as e:
-                self.log.error(f"Error executing playbook {playbook_name}: {e}")
-                return InterfaceStatus.I2Error(e)
+                add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name="HTML report", field_type="html",
+                                        field_value=rendered_report)
 
-            job_id = query_result.get("job_id")
+            except Exception:
 
-            try:
-                job_result = self.get_job_result(job_id)
-            except IntelOwlClientException as e:
-                self.log.error(e)
-                return InterfaceStatus.I2Error(e)
-
-            if self.mod_config.get('intelowl_report_as_attribute') is True:
-                self.log.info(f'Adding new attribute IntelOwl URL Report to IOC for playbook: {playbook_name}')
-
-                # Create a copy to avoid data sharing between playbooks
-                report = copy.deepcopy(job_result)
-
-                status = self.gen_url_report_from_template(self.mod_config.get('intelowl_url_report_template'), report, playbook_name)
-
-                if not status.is_success():
-                    return status
-
-                rendered_report = status.get_data()
-
-                try:
-                    # Add playbook name to field name if multiple playbooks
-                    field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
-                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
-                    add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
-                                            field_value=rendered_report)
-
-                except Exception:
-
-                    self.log.error(traceback.format_exc())
-                    return InterfaceStatus.I2Error(traceback.format_exc())
-            else:
-                self.log.info('Skipped adding attribute report. Option disabled')
+                self.log.error(traceback.format_exc())
+                return InterfaceStatus.I2Error(traceback.format_exc())
+        else:
+            self.log.info('Skipped adding attribute report. Option disabled')
 
         return InterfaceStatus.I2Success()
 
@@ -474,54 +431,46 @@ class IntelowlHandler(object):
         self.log.info(f'Getting hash report for {ioc.ioc_value}')
 
         hash = ioc.ioc_value
-        playbook_names = self.get_playbook_names()
-        
-        # Execute analysis for each playbook
-        for playbook_name in playbook_names:
-            self.log.info(f'Executing playbook: {playbook_name} for hash: {hash}')
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
+        try:
+            query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=hash,
+                                                                                   playbook_requested=playbook_name,
+                                                                                   tags_labels=["iris"],
+                                                                                   observable_classification="hash")
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        job_id = query_result.get("job_id")
+
+        try:
+            job_result = self.get_job_result(job_id)
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        if self.mod_config.get('intelowl_report_as_attribute') is True:
+            self.log.info('Adding new attribute IntelOwl hash Report to IOC')
+
+            report = job_result
+
+            status = self.gen_hash_report_from_template(self.mod_config.get('intelowl_hash_report_template'), report, playbook_name)
+
+            if not status.is_success():
+                return status
+
+            rendered_report = status.get_data()
+
             try:
-                query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=hash,
-                                                                                       playbook_requested=playbook_name,
-                                                                                       tags_labels=["iris"],
-                                                                                       observable_classification="hash")
-            except IntelOwlClientException as e:
-                self.log.error(f"Error executing playbook {playbook_name}: {e}")
-                return InterfaceStatus.I2Error(e)
+                add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name="HTML report", field_type="html",
+                                        field_value=rendered_report)
 
-            job_id = query_result.get("job_id")
+            except Exception:
 
-            try:
-                job_result = self.get_job_result(job_id)
-            except IntelOwlClientException as e:
-                self.log.error(e)
-                return InterfaceStatus.I2Error(e)
-
-            if self.mod_config.get('intelowl_report_as_attribute') is True:
-                self.log.info(f'Adding new attribute IntelOwl hash Report to IOC for playbook: {playbook_name}')
-
-                # Create a copy to avoid data sharing between playbooks
-                report = copy.deepcopy(job_result)
-
-                status = self.gen_hash_report_from_template(self.mod_config.get('intelowl_hash_report_template'), report, playbook_name)
-
-                if not status.is_success():
-                    return status
-
-                rendered_report = status.get_data()
-
-                try:
-                    # Add playbook name to field name if multiple playbooks
-                    field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
-                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
-                    add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
-                                            field_value=rendered_report)
-
-                except Exception:
-
-                    self.log.error(traceback.format_exc())
-                    return InterfaceStatus.I2Error(traceback.format_exc())
-            else:
-                self.log.info('Skipped adding attribute report. Option disabled')
+                self.log.error(traceback.format_exc())
+                return InterfaceStatus.I2Error(traceback.format_exc())
+        else:
+            self.log.info('Skipped adding attribute report. Option disabled')
 
         return InterfaceStatus.I2Success()
 
@@ -536,54 +485,46 @@ class IntelowlHandler(object):
         self.log.info(f'Getting generic report for {ioc.ioc_value}')
 
         generic = ioc.ioc_value
-        playbook_names = self.get_playbook_names()
-        
-        # Execute analysis for each playbook
-        for playbook_name in playbook_names:
-            self.log.info(f'Executing playbook: {playbook_name} for generic: {generic}')
+        playbook_name = self.mod_config.get("intelowl_playbook_name")
+        try:
+            query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=generic,
+                                                                                   playbook_requested=playbook_name,
+                                                                                   tags_labels=["iris"],
+                                                                                   observable_classification="generic")
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        job_id = query_result.get("job_id")
+
+        try:
+            job_result = self.get_job_result(job_id)
+        except IntelOwlClientException as e:
+            self.log.error(e)
+            return InterfaceStatus.I2Error(e)
+
+        if self.mod_config.get('intelowl_report_as_attribute') is True:
+            self.log.info('Adding new attribute IntelOwl generic Report to IOC')
+
+            report = job_result
+
+            status = self.gen_generic_report_from_template(self.mod_config.get('intelowl_generic_report_template'),
+                                                           report, playbook_name)
+
+            if not status.is_success():
+                return status
+
+            rendered_report = status.get_data()
+
             try:
-                query_result = self.intelowl.send_observable_analysis_playbook_request(observable_name=generic,
-                                                                                       playbook_requested=playbook_name,
-                                                                                       tags_labels=["iris"],
-                                                                                       observable_classification="generic")
-            except IntelOwlClientException as e:
-                self.log.error(f"Error executing playbook {playbook_name}: {e}")
-                return InterfaceStatus.I2Error(e)
+                add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name="HTML report", field_type="html",
+                                        field_value=rendered_report)
 
-            job_id = query_result.get("job_id")
+            except Exception:
 
-            try:
-                job_result = self.get_job_result(job_id)
-            except IntelOwlClientException as e:
-                self.log.error(e)
-                return InterfaceStatus.I2Error(e)
-
-            if self.mod_config.get('intelowl_report_as_attribute') is True:
-                self.log.info(f'Adding new attribute IntelOwl generic Report to IOC for playbook: {playbook_name}')
-
-                # Create a copy to avoid data sharing between playbooks
-                report = copy.deepcopy(job_result)
-
-                status = self.gen_generic_report_from_template(self.mod_config.get('intelowl_generic_report_template'),
-                                                               report, playbook_name)
-
-                if not status.is_success():
-                    return status
-
-                rendered_report = status.get_data()
-
-                try:
-                    # Add playbook name to field name if multiple playbooks
-                    field_name = f"HTML report - {playbook_name}" if len(playbook_names) > 1 else "HTML report"
-                    self.log.info(f"📝 Creating attribute: '{field_name}' for playbook: {playbook_name}")
-                    add_tab_attribute_field(ioc, tab_name='IntelOwl Report', field_name=field_name, field_type="html",
-                                            field_value=rendered_report)
-
-                except Exception:
-
-                    self.log.error(traceback.format_exc())
-                    return InterfaceStatus.I2Error(traceback.format_exc())
-            else:
-                self.log.info('Skipped adding attribute report. Option disabled')
+                self.log.error(traceback.format_exc())
+                return InterfaceStatus.I2Error(traceback.format_exc())
+        else:
+            self.log.info('Skipped adding attribute report. Option disabled')
 
         return InterfaceStatus.I2Success()
