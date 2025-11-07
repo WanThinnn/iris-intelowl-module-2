@@ -1,1 +1,0 @@
-pyintelowl>=4.4.0
