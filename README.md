@@ -1,5 +1,5 @@
-# iris-intelowl-module
+# iris-intelowl-module-2
 
-`iris-intelowl-module` is a IRIS processor module providing open-source threat intelligence leveraging IntelOlw analyzers, to enrich indicators of compromise
+`iris-intelowl-module-2` is a IRIS processor module providing open-source threat intelligence leveraging IntelOlw analyzers, to enrich indicators of compromise
 
 Copyright 2022, dfir-iris under the License Apache Software License 3.0
