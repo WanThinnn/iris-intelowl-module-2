@@ -1,1 +1,8 @@
-- Copyright (C) 2022 - dfir-iris - contact@dfir-iris.org
+# Original Author
+Copyright (C) 2022 - dfir-iris - contact@dfir-iris.org
+
+# Modified / Extended Version
+Modifications and additional features © 2025 - Lại Quan Thiên (CNSC Intern)
+Email: thienlai159@gmail.com
+Project: iris-intelowl-module-2
+Based on the original iris-intelowl-module by dfir-iris.
